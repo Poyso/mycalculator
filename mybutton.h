@@ -1,13 +1,12 @@
 #include <SFML/Graphics.hpp>
 
-#define CHARACTER_SIZE 75
-#define CENTER_OFFSET_X_TEXT 50.f
-#define CENTER_OFFSET_Y_TEXT 30.f
+#define CHARACTER_SIZE 35
+#define CENTER_OFFSET_X_TEXT 25.f
+#define CENTER_OFFSET_Y_TEXT 15.f
 
 class myButton {
 public:
   myButton(sf::Font font, sf::Text text, sf::RectangleShape rectangle) {
-    // font.loadFromFile("JetBrainsMono-Regular.ttf");
     thisFont = font;
     thisText = text;
     thisRectangle = rectangle;
