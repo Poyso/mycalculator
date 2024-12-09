@@ -1,11 +1,13 @@
-#include <SFML/Graphics.hpp>
-
 #include "mybutton.h"
+#include "mydisplay.h"
 
 #define CALCULATOR_BUTTON_SIZE 75.f
+#define MY_FONT "JetBrainsMono-Regular.ttf"
 
 int main() {
   sf::RenderWindow window(sf::VideoMode(325, 550), "My window");
+
+  myDisplay display = createDisplay();
   // 1st row startng from the bottom negative-0-.-=
   myButton buttonNegative = createButton(
       0, 470, "N", sf::Color::White, sf::Color::Black, CALCULATOR_BUTTON_SIZE,
@@ -83,6 +85,7 @@ int main() {
         window.close();
     }
     window.clear();
+    window.draw(display.GetText());
     // printing 1st row
     window.draw(buttonNegative.GetSquare());
     window.draw(buttonNegative.GetText());
