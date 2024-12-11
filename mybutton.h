@@ -42,5 +42,6 @@ private:
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
                       const float width, const float height);
+void EventOnClick(myButton, sf::RenderWindow *);
 
 #endif

@@ -83,6 +83,21 @@ int main() {
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed)
         window.close();
+      // if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+      //   // transform the mouse position from window coordinates to world
+      //   // coordinates
+      //   sf::Vector2f mouse =
+      //       window.mapPixelToCoords(sf::Mouse::getPosition(window));
+      //
+      //   // retrieve the bounding box of the sprite
+      //   sf::FloatRect bounds = button0.GetSquare().getGlobalBounds();
+      //
+      //   // hit test
+      //   if (bounds.contains(mouse)) {
+      //     std::cout << "MAMMA rompe o" << std::endl;
+      //   }
+      //}
+      EventOnClick(button0, &window);
     }
     window.clear();
     window.draw(display.GetText());
