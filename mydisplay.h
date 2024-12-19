@@ -14,7 +14,9 @@ public:
   }
   void SetPos(float x, float y) { displayText.setPosition(x, y); }
   void SetText(std::string ch) { displayText.setString(ch); }
+  std::string GetString() { return displayText.getString(); }
   sf::Text GetText() { return displayText; }
+  void Clear() { displayText.setString(""); }
 
 private:
   sf::Text displayText;

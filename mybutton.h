@@ -1,3 +1,4 @@
+#include "mydisplay.h"
 #include <SFML/Graphics.hpp>
 
 #define CHARACTER_SIZE 35
@@ -28,6 +29,7 @@ public:
     thisRectangle.setFillColor(squareColor);
     thisText.setFillColor(textColor);
   }
+  std::string GetString() { return thisText.getString(); }
   sf::Text GetText() { return thisText; }
   sf::RectangleShape GetSquare() { return thisRectangle; }
 
@@ -42,6 +44,6 @@ private:
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
                       const float width, const float height);
-void EventOnClick(myButton, sf::RenderWindow *);
+void EventOnClick(myButton, sf::RenderWindow *, myDisplay *, float, float *);
 
 #endif

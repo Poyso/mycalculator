@@ -1,5 +1,6 @@
 #include "mybutton.h"
-#include "mydisplay.h"
+#include <SFML/System/Clock.hpp>
+#include <iostream>
 
 #define CALCULATOR_BUTTON_SIZE 75.f
 #define MY_FONT "JetBrainsMono-Regular.ttf"
@@ -76,28 +77,29 @@ int main() {
   myButton buttonDiv =
       createButton(255, 130, "/", sf::Color::White, sf::Color::Black,
                    CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
+  sf::Clock clock;
+  float startTime = 1;
 
   // run the program as long as the window is open
   while (window.isOpen()) {
+    float currentTime = clock.getElapsedTime().asSeconds();
+    // clock.restart();
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed)
         window.close();
-      // if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-      //   // transform the mouse position from window coordinates to world
-      //   // coordinates
-      //   sf::Vector2f mouse =
-      //       window.mapPixelToCoords(sf::Mouse::getPosition(window));
-      //
-      //   // retrieve the bounding box of the sprite
-      //   sf::FloatRect bounds = button0.GetSquare().getGlobalBounds();
-      //
-      //   // hit test
-      //   if (bounds.contains(mouse)) {
-      //     std::cout << "MAMMA rompe o" << std::endl;
-      //   }
-      //}
-      EventOnClick(button0, &window);
+      // Event to make work numerical buttons
+      EventOnClick(button0, &window, &display, currentTime, &startTime);
+      EventOnClick(button1, &window, &display, currentTime, &startTime);
+      EventOnClick(button2, &window, &display, currentTime, &startTime);
+      EventOnClick(button3, &window, &display, currentTime, &startTime);
+      EventOnClick(button4, &window, &display, currentTime, &startTime);
+      EventOnClick(button5, &window, &display, currentTime, &startTime);
+      EventOnClick(button6, &window, &display, currentTime, &startTime);
+      EventOnClick(button7, &window, &display, currentTime, &startTime);
+      EventOnClick(button8, &window, &display, currentTime, &startTime);
+      EventOnClick(button9, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonBS, &window, &display, currentTime, &startTime);
     }
     window.clear();
     window.draw(display.GetText());

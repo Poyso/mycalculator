@@ -8,6 +8,6 @@ myDisplay createDisplay() {
   myDisplay display(test, font);
   display.SetFont(MY_FONT);
   display.SetText("0");
-  display.SetPos(280, 20);
+  display.SetPos(0, 20);
   return display;
 }
