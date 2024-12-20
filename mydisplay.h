@@ -16,7 +16,7 @@ public:
   void SetText(std::string ch) { displayText.setString(ch); }
   std::string GetString() { return displayText.getString(); }
   sf::Text GetText() { return displayText; }
-  void Clear() { displayText.setString(""); }
+  void Clear() { displayText.setString("0"); }
 
 private:
   sf::Text displayText;

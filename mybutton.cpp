@@ -1,6 +1,6 @@
 #include "mybutton.h"
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <iostream>
+#include <cstring>
 
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
@@ -30,16 +30,26 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
     // hit test
     if (current_time > *start_time) {
       if (bounds.contains(mouse)) {
-        // TODO: insert the event when button is pressed
+        std::string old_text = display->GetString();
         std::string new_string = b.GetString();
-        if (new_string == "BS") {
+        if (new_string == "C") {
           display->Clear();
+        } else if (old_text == "0") {
+          display->Clear();
+          std::string text_combined = new_string;
+          display->SetText(text_combined);
+        } else if (new_string == "BS") {
+          old_text.pop_back();
+          if (old_text.length() == 0) {
+            display->SetText("0");
+          } else {
+            display->SetText(old_text);
+          }
         } else {
-          std::string old_text = display->GetString();
           std::string text_combined = old_text + new_string;
           display->SetText(text_combined);
         }
-        *start_time = current_time + 0.3;
+        *start_time = current_time + 0.1;
       }
     }
   }
