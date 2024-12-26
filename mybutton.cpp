@@ -1,6 +1,7 @@
 #include "mybutton.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <cstring>
+#include <iostream>
 
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
@@ -45,6 +46,19 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           } else {
             display->SetText(old_text);
           }
+        } else if (new_string == ".") {
+          int dotFound = 0;
+          for (int i = 0; i < old_text.length(); ++i) {
+            if (old_text[i] == '.') {
+              ++dotFound;
+              break;
+            }
+          }
+          if (dotFound != 1) {
+            std::string text_combined = old_text + new_string;
+            display->SetText(text_combined);
+          }
+
         } else {
           std::string text_combined = old_text + new_string;
           display->SetText(text_combined);

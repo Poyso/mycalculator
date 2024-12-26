@@ -99,6 +99,7 @@ int main() {
       EventOnClick(button7, &window, &display, currentTime, &startTime);
       EventOnClick(button8, &window, &display, currentTime, &startTime);
       EventOnClick(button9, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonDot, &window, &display, currentTime, &startTime);
       EventOnClick(buttonBS, &window, &display, currentTime, &startTime);
       EventOnClick(buttonC, &window, &display, currentTime, &startTime);
     }
