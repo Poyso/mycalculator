@@ -35,10 +35,6 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
         std::string new_string = b.GetString();
         if (new_string == "C") {
           display->Clear();
-        } else if (old_text == "0") {
-          display->Clear();
-          std::string text_combined = new_string;
-          display->SetText(text_combined);
         } else if (new_string == "BS") {
           old_text.pop_back();
           if (old_text.length() == 0) {
@@ -48,18 +44,17 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           }
         } else if (new_string == ".") {
           int dotFound = 0;
-          for (int i = 0; i < old_text.length(); ++i) {
-            if (old_text[i] == '.') {
-              ++dotFound;
-              break;
-            }
-          }
+          if (old_text.find(".") < old_text.length())
+            ++dotFound;
           if (dotFound != 1) {
             std::string text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
 
         } else {
+          if (old_text == "0")
+            old_text.pop_back();
+
           std::string text_combined = old_text + new_string;
           display->SetText(text_combined);
         }
