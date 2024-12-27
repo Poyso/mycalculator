@@ -1,6 +1,5 @@
 #include "mybutton.h"
 #include <SFML/System/Clock.hpp>
-#include <iostream>
 
 #define CALCULATOR_BUTTON_SIZE 75.f
 #define MY_FONT "JetBrainsMono-Regular.ttf"

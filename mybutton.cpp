@@ -1,7 +1,6 @@
 #include "mybutton.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <cstring>
-#include <iostream>
 
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
