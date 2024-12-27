@@ -1,6 +1,9 @@
 #include "mybutton.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <string>
 
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
@@ -16,6 +19,25 @@ myButton createButton(const int pos_x, const int pos_y, const char *text,
   new_button.SetColor(shapeColor, textColor);
   return new_button;
 }
+
+float Sum(std::string text) {
+  float sum;
+  std::string firstadding, secondadding;
+  for (int i = 0; i < text.find("+"); ++i) {
+    firstadding += text[i];
+  }
+
+  for (int i = text.find("+") + 1; i < text.length(); ++i) {
+    secondadding += text[i];
+  }
+  float firstNumber = std::stof(firstadding);
+  float secondNumber = std::stof(secondadding);
+  sum = firstNumber + secondNumber;
+  float out;
+  std::cout << std::setprecision(2) << std::fixed << sum;
+  return sum;
+}
+
 void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
                   float current_time, float *start_time) {
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -49,6 +71,17 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             std::string text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
+
+        } else if (new_string == "+") {
+          // TODO: da problemi se premo consecutivamente "+"
+          if (old_text.find("+") < old_text.length()) {
+            // operazione di uguale
+            std::string x = std::to_string(Sum(old_text));
+            display->Clear();
+            old_text = x;
+          }
+          std::string text_combined = old_text + new_string;
+          display->SetText(text_combined);
 
         } else {
           if (old_text == "0")

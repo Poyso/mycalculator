@@ -101,6 +101,7 @@ int main() {
       EventOnClick(buttonDot, &window, &display, currentTime, &startTime);
       EventOnClick(buttonBS, &window, &display, currentTime, &startTime);
       EventOnClick(buttonC, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonPlus, &window, &display, currentTime, &startTime);
     }
     window.clear();
     window.draw(display.GetText());
