@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 myButton createButton(const int pos_x, const int pos_y, const char *text,
@@ -19,6 +20,14 @@ myButton createButton(const int pos_x, const int pos_y, const char *text,
   new_button.SetColor(shapeColor, textColor);
   return new_button;
 }
+int check_symbols(std::string text, char symbol) {
+  int n = 0;
+  for (int i = 0; i < text.length(); ++i) {
+    if (text[i] == symbol)
+      ++n;
+  }
+  return n;
+}
 
 float Sum(std::string text) {
   float sum;
@@ -33,8 +42,6 @@ float Sum(std::string text) {
   float firstNumber = std::stof(firstadding);
   float secondNumber = std::stof(secondadding);
   sum = firstNumber + secondNumber;
-  float out;
-  std::cout << std::setprecision(2) << std::fixed << sum;
   return sum;
 }
 
@@ -76,9 +83,10 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           // TODO: da problemi se premo consecutivamente "+"
           if (old_text.find("+") < old_text.length()) {
             // operazione di uguale
-            std::string x = std::to_string(Sum(old_text));
+            std::stringstream x;
+            x << std::setprecision(2) << std::fixed << Sum(old_text);
             display->Clear();
-            old_text = x;
+            old_text = x.str();
           }
           std::string text_combined = old_text + new_string;
           display->SetText(text_combined);
