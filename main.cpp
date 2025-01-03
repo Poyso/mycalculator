@@ -11,7 +11,7 @@ int main() {
   // 1st row startng from the bottom negative-0-.-=
   myButton buttonNegative = createButton(
       0, 470, "+/-", sf::Color::White, sf::Color::Black, CALCULATOR_BUTTON_SIZE,
-      CALCULATOR_BUTTON_SIZE); // TODO: symbol for negative operation
+      CALCULATOR_BUTTON_SIZE, -18, 0); // TODO: symbol for negative operation
   myButton button0 =
       createButton(85, 470, "0", sf::Color::White, sf::Color::Black,
                    CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
@@ -66,12 +66,12 @@ int main() {
                    CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
   myButton buttonCE =
       createButton(85, 130, "CE", sf::Color::White, sf::Color::Black,
-                   CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
+                   CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE, -8, 0);
   // TODO: find an emoji for the button ce and possibly another button instead
   // of ce
   myButton buttonBS =
       createButton(170, 130, "<-", sf::Color::White, sf::Color::Black,
-                   CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
+                   CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE, -10, 0);
   // TODO: find a an emoji for back space
   myButton buttonDiv =
       createButton(255, 130, "/", sf::Color::White, sf::Color::Black,

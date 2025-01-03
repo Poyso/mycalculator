@@ -21,9 +21,11 @@ public:
     thisText.setCharacterSize(CHARACTER_SIZE);
   }
   void SetText(const sf::String &string) { thisText.setString(string); }
-  void SetPosition(float x, float y) {
+  void SetPosition(float x, float y, float optional_offset_x = 0,
+                   float optional_offset_y = 0) {
     thisRectangle.setPosition(x, y);
-    thisText.setPosition(x + CENTER_OFFSET_X_TEXT, y + CENTER_OFFSET_Y_TEXT);
+    thisText.setPosition(x + CENTER_OFFSET_X_TEXT + optional_offset_x,
+                         y + CENTER_OFFSET_Y_TEXT + optional_offset_y);
   }
   void SetColor(sf::Color squareColor, sf::Color textColor) {
     thisRectangle.setFillColor(squareColor);
@@ -43,7 +45,8 @@ private:
 #define MYHEADER_H
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
-                      const float width, const float height);
+                      const float width, const float height, int offset_x = 0,
+                      int offset_y = 0);
 void EventOnClick(myButton, sf::RenderWindow *, myDisplay *, float, float *);
 
 #endif

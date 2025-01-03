@@ -9,7 +9,8 @@
 
 myButton createButton(const int pos_x, const int pos_y, const char *text,
                       sf::Color shapeColor, sf::Color textColor,
-                      const float width, const float height) {
+                      const float width, const float height, int offset_x,
+                      int offset_y) {
   sf::Text text_object;
   sf::RectangleShape rectangle;
   sf::Font font;
@@ -17,7 +18,7 @@ myButton createButton(const int pos_x, const int pos_y, const char *text,
   new_button.SetFont("JetBrainsMono-Regular.ttf");
   new_button.SetText(text);
   new_button.SetSize(width, height);
-  new_button.SetPosition(pos_x, pos_y);
+  new_button.SetPosition(pos_x, pos_y, offset_x, offset_y);
   new_button.SetColor(shapeColor, textColor);
   return new_button;
 }
