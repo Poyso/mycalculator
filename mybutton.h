@@ -20,7 +20,7 @@ public:
     thisRectangle.setSize(sf::Vector2f(h, w));
     thisText.setCharacterSize(CHARACTER_SIZE);
   }
-  void SetText(const char *string) { thisText.setString(string); }
+  void SetText(const sf::String &string) { thisText.setString(string); }
   void SetPosition(float x, float y) {
     thisRectangle.setPosition(x, y);
     thisText.setPosition(x + CENTER_OFFSET_X_TEXT, y + CENTER_OFFSET_Y_TEXT);
