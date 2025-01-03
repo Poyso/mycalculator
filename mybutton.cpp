@@ -1,5 +1,6 @@
 #include "mybutton.h"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <cmath>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
@@ -34,6 +35,8 @@ float Sum(std::string text) {
   float firstNumber = std::stof(firstadding);
   float secondNumber = std::stof(secondadding);
   sum = firstNumber + secondNumber;
+  int sum_int;
+
   return sum;
 }
 
@@ -72,11 +75,13 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           }
 
         } else if (new_string == "+") {
-          // TODO: da problemi se premo consecutivamente "+"
           if (old_text[old_text.length() - 1] != '+') {
             if (old_text.find("+") < old_text.length()) {
               std::stringstream x;
-              x << std::setprecision(2) << std::fixed << Sum(old_text);
+              if (Sum(old_text) == ceil(Sum(old_text)))
+                x << std::setprecision(0) << std::fixed << Sum(old_text);
+              else
+                x << std::setprecision(2) << std::fixed << Sum(old_text);
               display->Clear();
               old_text = x.str();
             }
