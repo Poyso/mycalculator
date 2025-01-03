@@ -20,11 +20,7 @@ myButton createButton(const int pos_x, const int pos_y, const char *text,
   new_button.SetColor(shapeColor, textColor);
   return new_button;
 }
-void last_char(std::string *text) {
-  if (text[text->length() - 1] == text[text->length() - 2]) {
-    text->pop_back();
-  }
-}
+
 float Sum(std::string text) {
   float sum;
   std::string firstadding, secondadding;
@@ -79,7 +75,6 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           // TODO: da problemi se premo consecutivamente "+"
           if (old_text[old_text.length() - 1] != '+') {
             if (old_text.find("+") < old_text.length()) {
-              last_char(&old_text);
               std::stringstream x;
               x << std::setprecision(2) << std::fixed << Sum(old_text);
               display->Clear();
