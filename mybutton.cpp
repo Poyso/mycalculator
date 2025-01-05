@@ -23,6 +23,22 @@ myButton createButton(const int pos_x, const int pos_y, const char *text,
   return new_button;
 }
 
+std::string push_start(std::string text, int pos) {
+  if (text[pos] != '-') {
+    text.push_back(' ');
+    for (int i = text.length() - 1; i != pos; --i) {
+      text[i] = text[i - 1];
+    }
+    text[pos] = '-';
+  } else {
+    for (int i = pos; i < text.length(); ++i) {
+      text[i] = text[i + 1];
+    }
+    text.pop_back();
+  }
+  return text;
+}
+
 float Sum(std::string text) {
   float sum;
   std::string firstadding, secondadding;
@@ -59,7 +75,7 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
         std::string new_string = b.GetString();
         if (new_string == "C") {
           display->Clear();
-        } else if (new_string == "BS") {
+        } else if (new_string == "<-") {
           old_text.pop_back();
           if (old_text.length() == 0) {
             display->SetText("0");
@@ -68,6 +84,8 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           }
         } else if (new_string == ".") {
           int dotFound = 0;
+          // TODO: trovare un modo di aggiungere un altro punto se ci sono 2
+          // numeri
           if (old_text.find(".") < old_text.length())
             ++dotFound;
           if (dotFound != 1) {
@@ -89,7 +107,16 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             std::string text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
+        } else if (new_string == "+/-") {
+          std::string text = old_text;
+          if (old_text.find("+") < old_text.length() && old_text != "0") {
+            text = push_start(text, old_text.find("+") + 1);
 
+          } else if (old_text.find("+") > old_text.length() &&
+                     old_text != "0") {
+            text = push_start(old_text, 0);
+          }
+          display->SetText(text);
         } else {
           if (old_text == "0")
             old_text.pop_back();

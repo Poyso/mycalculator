@@ -102,6 +102,7 @@ int main() {
       EventOnClick(buttonBS, &window, &display, currentTime, &startTime);
       EventOnClick(buttonC, &window, &display, currentTime, &startTime);
       EventOnClick(buttonPlus, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonNegative, &window, &display, currentTime, &startTime);
     }
     window.clear();
     window.draw(display.GetText());
