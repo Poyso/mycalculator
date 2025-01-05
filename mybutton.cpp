@@ -7,8 +7,6 @@
 #include <sstream>
 #include <string>
 
-sf::String minus = L"—";
-
 myButton createButton(const int pos_x, const int pos_y, const sf::String text,
                       sf::Color shapeColor, sf::Color textColor,
                       const float width, const float height, int offset_x,
@@ -32,7 +30,7 @@ int checkOperations(sf::String text) {
   else
     return 0;
 }
-std::string push_start(sf::String text, int pos) {
+sf::String push_start(sf::String text, int pos) {
   if (text[pos] != '-') {
     text.insert(pos, '-');
   } else {
@@ -57,7 +55,6 @@ float Sum(sf::String text) {
   float firstNumber = std::stof(firstadding);
   float secondNumber = std::stof(secondadding);
   sum = firstNumber + secondNumber;
-  int sum_int;
 
   return sum;
 }
@@ -89,22 +86,20 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           }
         } else if (new_string == ".") {
           int dotFound = 0;
-          // TODO: trovare un modo di aggiungere un altro punto se ci sono 2
-          // numeri
           for (int i = 0; i < old_text.getSize(); ++i) {
             if (old_text[i] == '.')
               ++dotFound;
           }
-          if (dotFound < 1) {
-            std::string text_combined = old_text + new_string;
+          if (dotFound < 1 && checkOperations(old_text)) {
+            std::cout << old_text.getSize() << std::endl;
+            sf::String text_combined = old_text + new_string;
             display->SetText(text_combined);
           } else if (dotFound < 2 && old_text.find("+") < old_text.getSize()) {
             if (!(old_text[old_text.getSize() - 1] > '0' &&
                   old_text[old_text.getSize() - 1] < '9')) {
               new_string = "0.";
             }
-            std::cout << old_text[old_text.getSize() - 1] << std::endl;
-            std::string text_combined = old_text + new_string;
+            sf::String text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
         } else if (new_string == "+") {
@@ -118,7 +113,7 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
               display->Clear();
               old_text = x.str();
             }
-            std::string text_combined = old_text + new_string;
+            sf::String text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
         } else if (new_string == L"—") {
@@ -127,7 +122,7 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           display->SetText(text_combined);
 
         } else if (new_string == "+/-") {
-          std::string text = old_text;
+          sf::String text = old_text;
           if (old_text.find("+") < old_text.getSize() && old_text != "0") {
             text = push_start(text, old_text.find("+") + 1);
 
