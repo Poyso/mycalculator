@@ -14,8 +14,8 @@ public:
     displayText.setFont(displayFont);
   }
   void SetPos(float x, float y) { displayText.setPosition(x, y); }
-  void SetText(std::string ch) { displayText.setString(ch); }
-  std::string GetString() { return displayText.getString(); }
+  void SetText(sf::String ch) { displayText.setString(ch); }
+  sf::String GetString() { return displayText.getString(); }
   sf::Text GetText() { return displayText; }
   void Clear() { displayText.setString("0"); }
 

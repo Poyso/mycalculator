@@ -31,7 +31,7 @@ public:
     thisRectangle.setFillColor(squareColor);
     thisText.setFillColor(textColor);
   }
-  std::string GetString() { return thisText.getString(); }
+  sf::String GetString() { return thisText.getString(); }
   sf::Text GetText() { return thisText; }
   sf::RectangleShape GetSquare() { return thisRectangle; }
 
@@ -43,7 +43,7 @@ private:
 
 #ifndef MYHEADER_H
 #define MYHEADER_H
-myButton createButton(const int pos_x, const int pos_y, const char *text,
+myButton createButton(const int pos_x, const int pos_y, sf::String text,
                       sf::Color shapeColor, sf::Color textColor,
                       const float width, const float height, int offset_x = 0,
                       int offset_y = 0);

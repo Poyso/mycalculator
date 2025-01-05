@@ -7,7 +7,9 @@
 #include <sstream>
 #include <string>
 
-myButton createButton(const int pos_x, const int pos_y, const char *text,
+sf::String minus = L"—";
+
+myButton createButton(const int pos_x, const int pos_y, const sf::String text,
                       sf::Color shapeColor, sf::Color textColor,
                       const float width, const float height, int offset_x,
                       int offset_y) {
@@ -23,30 +25,33 @@ myButton createButton(const int pos_x, const int pos_y, const char *text,
   return new_button;
 }
 
-std::string push_start(std::string text, int pos) {
+int checkOperations(sf::String text) {
+  if (text.find("+") < text.getSize() && text.find("-") < text.getSize() &&
+      text.find("*") < text.getSize() && text.find("/") < text.getSize())
+    return 1;
+  else
+    return 0;
+}
+std::string push_start(sf::String text, int pos) {
   if (text[pos] != '-') {
-    text.push_back(' ');
-    for (int i = text.length() - 1; i != pos; --i) {
-      text[i] = text[i - 1];
-    }
-    text[pos] = '-';
+    text.insert(pos, '-');
   } else {
-    for (int i = pos; i < text.length(); ++i) {
+    for (int i = pos; i < text.getSize(); ++i) {
       text[i] = text[i + 1];
     }
-    text.pop_back();
+    text.erase(text.getSize() - 1);
   }
   return text;
 }
 
-float Sum(std::string text) {
+float Sum(sf::String text) {
   float sum;
   std::string firstadding, secondadding;
   for (int i = 0; i < text.find("+"); ++i) {
     firstadding += text[i];
   }
 
-  for (int i = text.find("+") + 1; i < text.length(); ++i) {
+  for (int i = text.find("+") + 1; i < text.getSize(); ++i) {
     secondadding += text[i];
   }
   float firstNumber = std::stof(firstadding);
@@ -71,13 +76,13 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
     // hit test
     if (current_time > *start_time) {
       if (bounds.contains(mouse)) {
-        std::string old_text = display->GetString();
-        std::string new_string = b.GetString();
+        sf::String old_text = display->GetString();
+        sf::String new_string = b.GetString();
         if (new_string == "C") {
           display->Clear();
         } else if (new_string == "<-") {
-          old_text.pop_back();
-          if (old_text.length() == 0) {
+          old_text.erase(old_text.getSize() - 1);
+          if (old_text.getSize() == 0) {
             display->SetText("0");
           } else {
             display->SetText(old_text);
@@ -86,16 +91,25 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           int dotFound = 0;
           // TODO: trovare un modo di aggiungere un altro punto se ci sono 2
           // numeri
-          if (old_text.find(".") < old_text.length())
-            ++dotFound;
-          if (dotFound != 1) {
+          for (int i = 0; i < old_text.getSize(); ++i) {
+            if (old_text[i] == '.')
+              ++dotFound;
+          }
+          if (dotFound < 1) {
+            std::string text_combined = old_text + new_string;
+            display->SetText(text_combined);
+          } else if (dotFound < 2 && old_text.find("+") < old_text.getSize()) {
+            if (!(old_text[old_text.getSize() - 1] > '0' &&
+                  old_text[old_text.getSize() - 1] < '9')) {
+              new_string = "0.";
+            }
+            std::cout << old_text[old_text.getSize() - 1] << std::endl;
             std::string text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
-
         } else if (new_string == "+") {
-          if (old_text[old_text.length() - 1] != '+') {
-            if (old_text.find("+") < old_text.length()) {
+          if (old_text[old_text.getSize() - 1] != '+') {
+            if (old_text.find("+") < old_text.getSize()) {
               std::stringstream x;
               if (Sum(old_text) == ceil(Sum(old_text)))
                 x << std::setprecision(0) << std::fixed << Sum(old_text);
@@ -107,21 +121,33 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             std::string text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
+        } else if (new_string == L"—") {
+          sf::String old_converted_text = old_text;
+          sf::String text_combined = old_text + new_string;
+          display->SetText(text_combined);
+
         } else if (new_string == "+/-") {
           std::string text = old_text;
-          if (old_text.find("+") < old_text.length() && old_text != "0") {
+          if (old_text.find("+") < old_text.getSize() && old_text != "0") {
             text = push_start(text, old_text.find("+") + 1);
 
-          } else if (old_text.find("+") > old_text.length() &&
+          } else if (old_text.find("+") > old_text.getSize() &&
                      old_text != "0") {
             text = push_start(old_text, 0);
           }
           display->SetText(text);
+        } else if (new_string == "CE") {
+          while (old_text[old_text.getSize() - 1] != '+' &&
+                 old_text.find("+") < old_text.getSize()) {
+            old_text.erase(old_text.getSize() - 1);
+          }
+          display->SetText(old_text);
         } else {
-          if (old_text == "0")
-            old_text.pop_back();
+          if (old_text == "0") {
+            old_text.erase(old_text.getSize() - 1);
+          }
 
-          std::string text_combined = old_text + new_string;
+          sf::String text_combined = old_text + new_string;
           display->SetText(text_combined);
         }
         *start_time = current_time + 0.1;

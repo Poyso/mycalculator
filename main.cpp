@@ -6,7 +6,7 @@
 
 int main() {
   sf::RenderWindow window(sf::VideoMode(325, 550), "My window");
-
+  sf::String minus = L"—";
   myDisplay display = createDisplay();
   // 1st row startng from the bottom negative-0-.-=
   myButton buttonNegative = createButton(
@@ -45,7 +45,7 @@ int main() {
       createButton(170, 300, "6", sf::Color::White, sf::Color::Black,
                    CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
   myButton buttonMinus =
-      createButton(255, 300, "-", sf::Color::White, sf::Color::Black,
+      createButton(255, 300, minus, sf::Color::White, sf::Color::Black,
                    CALCULATOR_BUTTON_SIZE, CALCULATOR_BUTTON_SIZE);
   // 4th starting from the bottom 7-8-9-*
   myButton button7 =
@@ -102,7 +102,9 @@ int main() {
       EventOnClick(buttonBS, &window, &display, currentTime, &startTime);
       EventOnClick(buttonC, &window, &display, currentTime, &startTime);
       EventOnClick(buttonPlus, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonMinus, &window, &display, currentTime, &startTime);
       EventOnClick(buttonNegative, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonCE, &window, &display, currentTime, &startTime);
     }
     window.clear();
     window.draw(display.GetText());
