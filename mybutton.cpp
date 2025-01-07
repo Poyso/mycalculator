@@ -7,6 +7,8 @@
 #include <sstream>
 #include <string>
 
+sf::String minus = L"—";
+
 myButton createButton(const int pos_x, const int pos_y, const sf::String text,
                       sf::Color shapeColor, sf::Color textColor,
                       const float width, const float height, int offset_x,
@@ -24,8 +26,8 @@ myButton createButton(const int pos_x, const int pos_y, const sf::String text,
 }
 
 int checkOperations(sf::String text) {
-  if (text.find("+") < text.getSize() && text.find("-") < text.getSize() &&
-      text.find("*") < text.getSize() && text.find("/") < text.getSize())
+  if (text.find("+") < text.getSize() || text.find(minus) < text.getSize() ||
+      text.find("*") < text.getSize() || text.find("/") < text.getSize())
     return 1;
   else
     return 0;
@@ -57,6 +59,41 @@ float Sum(sf::String text) {
   sum = firstNumber + secondNumber;
 
   return sum;
+}
+float Sub(sf::String text) {
+  float sub;
+  std::string firstadding, secondadding;
+  for (int i = 0; i < text.find(minus); ++i) {
+    firstadding += text[i];
+  }
+
+  for (int i = text.find(minus) + 1; i < text.getSize(); ++i) {
+    secondadding += text[i];
+  }
+  float firstNumber = std::stof(firstadding);
+  float secondNumber = std::stof(secondadding);
+  sub = firstNumber - secondNumber;
+
+  return sub;
+}
+float Operation(sf::String text) {
+  int t = 0;
+  float result;
+  sf::String symbols[] = {'+', minus, '*', '/'};
+  for (int i = 0; i < 4; ++i) {
+    ++t;
+    if (text.find(symbols[i]) < text.getSize())
+      break;
+  }
+  switch (t) {
+  case 1:
+    result = Sum(text);
+    break;
+  case 2:
+    result = Sub(text);
+    // TODO: add the other oparations
+  }
+  return result;
 }
 
 void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
@@ -103,21 +140,27 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             display->SetText(text_combined);
           }
         } else if (new_string == "+") {
-          if (old_text[old_text.getSize() - 1] != '+') {
-            if (old_text.find("+") < old_text.getSize()) {
-              std::stringstream x;
-              if (Sum(old_text) == ceil(Sum(old_text)))
-                x << std::setprecision(0) << std::fixed << Sum(old_text);
-              else
-                x << std::setprecision(2) << std::fixed << Sum(old_text);
-              display->Clear();
-              old_text = x.str();
-            }
-            sf::String text_combined = old_text + new_string;
-            display->SetText(text_combined);
+          if (checkOperations(old_text)) {
+            std::stringstream x;
+            if (Operation(old_text) == ceil(Operation(old_text)))
+              x << std::setprecision(0) << std::fixed << Operation(old_text);
+            else
+              x << std::setprecision(2) << std::fixed << Operation(old_text);
+            display->Clear();
+            old_text = x.str();
           }
-        } else if (new_string == L"—") {
-          sf::String old_converted_text = old_text;
+          sf::String text_combined = old_text + new_string;
+          display->SetText(text_combined);
+        } else if (new_string == minus) {
+          if (checkOperations(old_text)) {
+            std::stringstream x;
+            if (Operation(old_text) == ceil(Operation(old_text)))
+              x << std::setprecision(0) << std::fixed << Operation(old_text);
+            else
+              x << std::setprecision(2) << std::fixed << Operation(old_text);
+            display->Clear();
+            old_text = x.str();
+          }
           sf::String text_combined = old_text + new_string;
           display->SetText(text_combined);
 
