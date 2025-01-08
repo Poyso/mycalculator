@@ -103,8 +103,11 @@ int main() {
       EventOnClick(buttonC, &window, &display, currentTime, &startTime);
       EventOnClick(buttonPlus, &window, &display, currentTime, &startTime);
       EventOnClick(buttonMinus, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonMul, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonDiv, &window, &display, currentTime, &startTime);
       EventOnClick(buttonNegative, &window, &display, currentTime, &startTime);
       EventOnClick(buttonCE, &window, &display, currentTime, &startTime);
+      EventOnClick(buttonEq, &window, &display, currentTime, &startTime);
     }
     window.clear();
     window.draw(display.GetText());

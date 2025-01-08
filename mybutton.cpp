@@ -93,6 +93,38 @@ float Sub(sf::String text) {
 
   return sub;
 }
+float Mul(sf::String text) {
+  float mul;
+  std::string firstadding, secondadding;
+  for (int i = 0; i < text.find("*"); ++i) {
+    firstadding += text[i];
+  }
+
+  for (int i = text.find("*") + 1; i < text.getSize(); ++i) {
+    secondadding += text[i];
+  }
+  float firstNumber = std::stof(firstadding);
+  float secondNumber = std::stof(secondadding);
+  mul = firstNumber * secondNumber;
+
+  return mul;
+}
+float Div(sf::String text) {
+  float div;
+  std::string firstadding, secondadding;
+  for (int i = 0; i < text.find("/"); ++i) {
+    firstadding += text[i];
+  }
+
+  for (int i = text.find("/") + 1; i < text.getSize(); ++i) {
+    secondadding += text[i];
+  }
+  float firstNumber = std::stof(firstadding);
+  float secondNumber = std::stof(secondadding);
+  div = firstNumber / secondNumber;
+
+  return div;
+}
 float Operation(sf::String text) {
   int t = 0;
   float result;
@@ -108,9 +140,26 @@ float Operation(sf::String text) {
     break;
   case 2:
     result = Sub(text);
-    // TODO: add the other oparations
+    break;
+  case 3:
+    result = Mul(text);
+    break;
+  case 4:
+    result = Div(text);
+    break;
   }
   return result;
+}
+int returnPosSymbol(sf::String text) {
+  if (text.find("+") < text.getSize())
+    return text.find("+");
+  else if (text.find(minus) < text.getSize())
+    return text.find(minus);
+  else if (text.find("*") < text.getSize())
+    return text.find("*");
+  else if (text.find("/") < text.getSize())
+    return text.find("/");
+  return 0;
 }
 
 void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
@@ -139,20 +188,21 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             display->SetText(old_text);
           }
         } else if (new_string == ".") {
-          int dotFound = 0;
-          for (int i = 0; i < old_text.getSize(); ++i) {
+          int dotFoundBeforeOperation = 0, dotFoundAfterOperation = 0;
+          for (int i = 0; i < returnPosSymbol(old_text); ++i) {
             if (old_text[i] == '.')
-              ++dotFound;
+              ++dotFoundBeforeOperation;
           }
-          if (dotFound < 1 && checkOperations(old_text)) {
-            std::cout << old_text.getSize() << std::endl;
+          for (int i = returnPosSymbol(old_text); i < old_text.getSize(); ++i) {
+            if (old_text[i] == '.')
+              ++dotFoundAfterOperation;
+          }
+          if (dotFoundBeforeOperation < 1 && !(checkOperations(old_text))) {
             sf::String text_combined = old_text + new_string;
             display->SetText(text_combined);
-          } else if (dotFound < 2 && old_text.find("+") < old_text.getSize()) {
-            if (!(old_text[old_text.getSize() - 1] > '0' &&
-                  old_text[old_text.getSize() - 1] < '9')) {
+          } else if (dotFoundAfterOperation < 1) {
+            if (checkLastChar(old_text, "equal"))
               new_string = "0.";
-            }
             sf::String text_combined = old_text + new_string;
             display->SetText(text_combined);
           }
@@ -185,23 +235,71 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
           if (checkLastChar(old_text, "equal"))
             text_combined.erase(text_combined.getSize() - 1);
           text_combined += new_string;
-
           display->SetText(text_combined);
+
+        } else if (new_string == "*") {
+          if (checkOperations(old_text) && checkLastChar(old_text, "nequal")) {
+            std::stringstream x;
+            if (Operation(old_text) == ceil(Operation(old_text)))
+              x << std::setprecision(0) << std::fixed << Operation(old_text);
+            else
+              x << std::setprecision(2) << std::fixed << Operation(old_text);
+            display->Clear();
+            old_text = x.str();
+          }
+          sf::String text_combined = old_text;
+          if (checkLastChar(old_text, "equal"))
+            text_combined.erase(text_combined.getSize() - 1);
+          text_combined += new_string;
+          display->SetText(text_combined);
+
+        } else if (new_string == "/") {
+          if (checkOperations(old_text) && checkLastChar(old_text, "nequal")) {
+            std::stringstream x;
+            if (Operation(old_text) == ceil(Operation(old_text)))
+              x << std::setprecision(0) << std::fixed << Operation(old_text);
+            else
+              x << std::setprecision(2) << std::fixed << Operation(old_text);
+            display->Clear();
+            old_text = x.str();
+          }
+          sf::String text_combined = old_text;
+          if (checkLastChar(old_text, "equal"))
+            text_combined.erase(text_combined.getSize() - 1);
+          text_combined += new_string;
+          display->SetText(text_combined);
+
+        } else if (new_string == "=") {
+          if (checkOperations(old_text) && checkLastChar(old_text, "nequal")) {
+            std::cout << "check" << std::endl;
+            std::stringstream x;
+            if (Operation(old_text) == ceil(Operation(old_text)))
+              x << std::setprecision(0) << std::fixed << Operation(old_text);
+            else
+              x << std::setprecision(2) << std::fixed << Operation(old_text);
+            display->Clear();
+            old_text = x.str();
+            display->SetText(old_text);
+          }
 
         } else if (new_string == "+/-") {
           sf::String text = old_text;
-          if (old_text.find("+") < old_text.getSize() && old_text != "0") {
-            text = push_start(text, old_text.find("+") + 1);
+          if (checkOperations(old_text) && old_text != "0") {
+            text = push_start(text, returnPosSymbol(old_text) + 1);
 
-          } else if (old_text.find("+") > old_text.getSize() &&
+          } else if ((old_text.find("+") > old_text.getSize() ||
+                      old_text.find(minus) > old_text.getSize() ||
+                      old_text.find("*") > old_text.getSize() ||
+                      old_text.find("/") > old_text.getSize()) &&
                      old_text != "0") {
             text = push_start(old_text, 0);
           }
           display->SetText(text);
         } else if (new_string == "CE") {
-          while (old_text[old_text.getSize() - 1] != '+' &&
-                 old_text.find("+") < old_text.getSize()) {
-            old_text.erase(old_text.getSize() - 1);
+          int n = old_text.getSize() - 1;
+          while (returnPosSymbol(old_text) + 1 <= n) {
+            old_text.erase(n);
+            --n;
           }
           display->SetText(old_text);
         } else {
