@@ -25,6 +25,23 @@ myButton createButton(const int pos_x, const int pos_y, const sf::String text,
   return new_button;
 }
 
+int checkLastChar(sf::String text, std::string mode) {
+  if (mode == "equal") {
+    if (text[text.getSize() - 1] == '+' || text[text.getSize() - 1] == minus ||
+        text[text.getSize() - 1] == '*' || text[text.getSize() - 1] == '/') {
+      return 1;
+    } else
+      return 0;
+  } else if (mode == "nequal") {
+    if (text[text.getSize() - 1] != '+' && text[text.getSize() - 1] != minus &&
+        text[text.getSize() - 1] != '*' && text[text.getSize() - 1] != '/') {
+      return 1;
+    } else
+      return 0;
+  }
+  return -1;
+}
+
 int checkOperations(sf::String text) {
   if (text.find("+") < text.getSize() || text.find(minus) < text.getSize() ||
       text.find("*") < text.getSize() || text.find("/") < text.getSize())
@@ -140,7 +157,7 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             display->SetText(text_combined);
           }
         } else if (new_string == "+") {
-          if (checkOperations(old_text)) {
+          if (checkOperations(old_text) && checkLastChar(old_text, "nequal")) {
             std::stringstream x;
             if (Operation(old_text) == ceil(Operation(old_text)))
               x << std::setprecision(0) << std::fixed << Operation(old_text);
@@ -149,10 +166,13 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             display->Clear();
             old_text = x.str();
           }
-          sf::String text_combined = old_text + new_string;
+          sf::String text_combined = old_text;
+          if (checkLastChar(old_text, "equal"))
+            text_combined.erase(text_combined.getSize() - 1);
+          text_combined += new_string;
           display->SetText(text_combined);
         } else if (new_string == minus) {
-          if (checkOperations(old_text)) {
+          if (checkOperations(old_text) && checkLastChar(old_text, "nequal")) {
             std::stringstream x;
             if (Operation(old_text) == ceil(Operation(old_text)))
               x << std::setprecision(0) << std::fixed << Operation(old_text);
@@ -161,7 +181,11 @@ void EventOnClick(myButton b, sf::RenderWindow *window, myDisplay *display,
             display->Clear();
             old_text = x.str();
           }
-          sf::String text_combined = old_text + new_string;
+          sf::String text_combined = old_text;
+          if (checkLastChar(old_text, "equal"))
+            text_combined.erase(text_combined.getSize() - 1);
+          text_combined += new_string;
+
           display->SetText(text_combined);
 
         } else if (new_string == "+/-") {
